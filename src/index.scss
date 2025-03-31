@@ -3,18 +3,22 @@
     margin: 0;
     box-sizing: border-box;
     transform-origin: center;
+
     &:focus-within {
         outline: none;
     }
 }
 
 body {
-    font-family: "Montserrat", sans-serif;
     position: relative;
+
     min-height: 100vh;
     background: #EFEFEF;
+
+    font-family: "Montserrat", sans-serif;
 }
 
+// imma be real i just like the bezier so thats why i do it like this
 @mixin transition($variables...) {
     transition-property: $variables;
     transition-duration: 250ms;

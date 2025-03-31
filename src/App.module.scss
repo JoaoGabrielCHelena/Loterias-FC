@@ -1,76 +1,91 @@
 @use "index";
 
-.button {
-    width: 215px;
-    height: 100%;
-    scale: 100%;
-    padding: 14px 22px;
+.dropdown {
+    &Button {
+        width: 215px;
+        height: 100%;
+        scale: 100%;
+        padding: 14px 22px;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-    border: none;
-    border-radius: 8px;
-
-    font-size: 15px;
-    cursor: pointer;
-
-    scale: 1;
-    background: #ffffff;
-    filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.05));
-    @include index.transition(scale);
-    &:hover,
-    &:focus-visible {
-        scale: 1.05;
-    }
-    svg {
-        @include index.transition(rotate);
-    }
-}
-
-.list {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 120%;
-    z-index: 100;
-    list-style-type: none;
-    width: calc(100% * 1.05);
-    flex-direction: column;
-    gap: 4px;
-    border-radius: 0.5rem;
-    background: #ffffff;
-    filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.05));
-    font-size: 17px;
-    padding: 8px;
-    display: flex;
-    visibility: hidden;
-    scale: 0.8;
-    transform-origin: left;
-    @include index.transition("scale");
-    &Show {
-        visibility: visible;
-        scale: 1;
-    }
-    button {
-        width: 100%;
-        padding: 4px;
-        scale: 1;
         border: none;
-        background: transparent;
+        border-radius: 8px;
+
+        font-size: 15px;
         cursor: pointer;
+
+        scale: 1;
+        background: #ffffff;
+        filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.05));
         @include index.transition(scale);
+
         &:hover,
         &:focus-visible {
-            scale: 1.1;
+            scale: 1.05;
+        }
+
+        svg {
+            @include index.transition(rotate);
         }
     }
-}
 
-.wrapper {
-    width: fit-content;
-    position: relative;
+    &List {
+        position: absolute;
+        left: 50%;
+        top: 120%;
+        transform: translateX(-50%);
+
+        width: calc(100% * 1.05);
+        padding: 8px;
+        border-radius: 0.5rem;
+        background: #ffffff;
+
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        z-index: 100;
+
+        font-size: 17px;
+
+        list-style-type: none;
+        filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.05));
+
+        visibility: hidden;
+        transform-origin: left;
+
+        scale: 0.8;
+        @include index.transition("scale");
+
+        &Show {
+            visibility: visible;
+            scale: 1;
+        }
+
+        button {
+            width: 100%;
+            padding: 4px;
+            border: none;
+            background: transparent;
+
+            cursor: pointer;
+
+            scale: 1;
+            @include index.transition(scale);
+
+            &:hover,
+            &:focus-visible {
+                scale: 1.1;
+            }
+        }
+    }
+
+    &Wrapper {
+        position: relative;
+        width: fit-content;
+    }
 }
 
 .contentWrapper {
@@ -84,9 +99,10 @@
 .coloredBg {
     color: var(--color);
     @include index.transition(color);
+
     &Desktop {
-        height: 100vh;
         display: none;
+        height: 100vh;
         @media (min-width: 768px) {
             display: block;
         }
@@ -107,23 +123,28 @@
         position: absolute;
         left: 0;
         top: 0;
+
         width: 100%;
         height: 100%;
+        padding: 64px 0;
+
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        padding: 64px 0;
 
         @media (min-width: 768px) {
             align-items: flex-start;
+
             padding: 92px 0 92px 96px;
         }
     }
 
     &Wrapper {
-        height: fit-content;
         position: relative;
+
+        height: fit-content;
+
         color: white;
     }
 
@@ -132,36 +153,45 @@
         flex-direction: column;
         align-items: center;
         gap: 11px;
+
         font-size: 30px;
         font-weight: bold;
         text-transform: uppercase;
+
         @media (min-width: 768px) {
-            gap: 22px;
             flex-direction: row;
+            gap: 22px;
         }
     }
 
     &Footer {
         &Desktop {
+            display: none;
+
             font-weight: bold;
             font-size: 20px;
             text-transform: uppercase;
-            display: none;
+
             span {
+                display: block;
+
                 margin-bottom: 14px;
+
                 font-size: 14px;
                 font-weight: 600;
                 letter-spacing: 13.5%;
-                display: block;
             }
+
             @media (min-width: 768px) {
                 display: block;
             }
         }
+
         &Mobile {
             font-size: 14px;
             font-weight: 600;
             text-transform: uppercase;
+
             @media (min-width: 768px) {
                 display: none;
             }
@@ -171,42 +201,57 @@
 
 .results {
     --maxColumns: 4;
-    --itemWidth: 112px;
+    --itemWidth: 76px;
 
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 35px;
+
     max-width: calc(
         var(--itemWidth) * var(--maxColumns) + 35px * (var(--maxColumns) - 1)
     );
+
     @media (min-width: 768px) {
         --maxColumns: 6;
+        --itemWidth: 112px;
+
+        max-height: 100vh;
     }
+
     &Item {
-        width: 76px;
-        aspect-ratio: 1;
-        background: #ffffff;
-        color: #333333;
-        border-radius: 50%;
         display: grid;
         place-items: center;
-        font-weight: bold;
-        font-size: 20px;
 
+        width: var(--itemWidth);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: #ffffff;
+
+        font-size: 20px;
+        color: #333333;
+        font-weight: bold;
+
+        scale: 1;
         @include index.transition(scale);
+
         &:hover {
             scale: 1.1;
         }
+
         @media (min-width: 768px) {
+            width: var(--itemWidth);
+
             font-size: 27px;
-            width: 112px;
         }
     }
+
     &Wrapper {
         display: grid;
         place-items: center;
+
         padding: 75px 35px;
+
         @media (min-width: 768px) {
             padding: 0 10px;
         }
