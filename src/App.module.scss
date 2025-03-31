@@ -193,6 +193,11 @@
         place-items: center;
         font-weight: bold;
         font-size: 20px;
+
+        @include index.transition(scale);
+        &:hover {
+            scale: 1.1;
+        }
         @media (min-width: 768px) {
             font-size: 27px;
             width: 112px;

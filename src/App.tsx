@@ -3,63 +3,25 @@ import styles from "./App.module.scss"
 import { useLocation, useNavigate } from "react-router-dom"
 
 function Dropdown({
-    names,
-    selected,
-    setSelected,
-    apiOptions,
-    setDataObj,
+    selectedItem,
+    dropdownItems,
 }: {
-    names: Map<string, string>
-    selected: string
-    setSelected: (i: string) => void
-    apiOptions: string[]
-    setDataObj: ({}: any) => void
+    selectedItem: string
+    dropdownItems: {
+        key: string
+        display: string
+        action: () => void
+    }[]
 }) {
     const [expanded, setExpanded] = useState(false)
-    const navigate = useNavigate()
 
     const toggleExpand = () => setExpanded(!expanded)
-    let locale = useLocation().pathname.substring(1)
-
-    useEffect(() => {
-        if (apiOptions.includes(locale)) {
-            setSelected(locale)
-        } else {
-            setSelected(apiOptions[0])
-        }
-    }, [locale])
-
-    let changeAddress = (i: string) => {
-        setExpanded(false)
-        navigate(`/${i}`)
-    }
-
-    // useEffect(() => {
-    //   const data = async () => {
-    //     try {
-    //       const response = await fetch(`https://loteriascaixa-api.herokuapp.com/api/${selected}/latest`);
-    //       if (!response.ok) {
-    //         throw new Error('Failed to fetch data');
-    //       }
-    //       const result = await response.json();
-    //       setDataObj({
-    //         dezenas: result.dezenas,
-    //         concurso: result.concurso,
-    //         data: result.data,
-    //       })
-    //     } catch (err) {
-    //       setDataObj(err.message); // Handle error
-    //     }
-    //   }
-    //
-    //   data()
-    // }, [selected])
 
     return (
         <>
             <div className={styles.wrapper}>
                 <button className={styles.button} onClick={toggleExpand}>
-                    {names.get(selected)}
+                    {selectedItem}
                     <svg
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -77,14 +39,17 @@ function Dropdown({
                 <ul
                     className={`${styles.list} ${expanded ? styles.listShow : ""}`}
                 >
-                    {apiOptions.map((i) => {
+                    {dropdownItems.map((i) => {
                         return (
                             <li
-                                key={i}
-                                onClick={() => changeAddress(i)}
+                                key={i.key}
+                                onClick={() => {
+                                    i.action()
+                                    toggleExpand()
+                                }}
                                 role="option"
                             >
-                                <button>{names.get(i)}</button>
+                                <button>{i.display}</button>
                             </li>
                         )
                     })}
@@ -114,6 +79,7 @@ function App() {
         ["timemania", "Timemania"],
         ["diadesorte", "Dia de sorte"],
     ])
+
     const optionsColor = new Map([
         ["megasena", "#6BEFA3"],
         ["quina", "#8666EF"],
@@ -122,6 +88,7 @@ function App() {
         ["timemania", "#5AAD7D"],
         ["diadesorte", "#BFAF83"],
     ])
+
     const apiOptions = Array.from(optionsName.keys())
 
     const [selected, setSelected] = useState(apiOptions[0])
@@ -130,6 +97,61 @@ function App() {
         dezenas: ["10", "31", "40", "52", "54", "56"],
         concurso: 2845,
         data: "27/03/2025",
+    })
+
+    // getting the path but without the starting / 
+    // its how it knows which to fetch
+    let locale = useLocation().pathname.substring(1)
+
+    useEffect(() => {
+        if (apiOptions.includes(locale)) {
+            setSelected(locale)
+        } else {
+            setSelected(apiOptions[0])
+        }
+    }, [locale])
+
+    // useEffect(() => {
+    //   const data = async () => {
+    //     try {
+    //       const response = await fetch(`https://loteriascaixa-api.herokuapp.com/api/${selected}/latest`);
+    //       if (!response.ok) {
+    //         throw new Error('Failed to fetch data');
+    //       }
+    //       const result = await response.json();
+    //       setDataObj({
+    //         dezenas: result.dezenas,
+    //         concurso: result.concurso,
+    //         data: result.data,
+    //       })
+    //     } catch (err) {
+    //       setDataObj(err.message); // Handle error
+    //     }
+    //   }
+    //
+    //   data()
+    // }, [selected])
+
+    const navigate = useNavigate()
+
+    let changeAddress = (i: string) => {
+        navigate(`/${i}`)
+    }
+
+    let dropdownOptions: {
+        key: string
+        display: string
+        action: () => void
+    }[] = []
+
+    apiOptions.forEach((e) => {
+        dropdownOptions.push({
+            key: e,
+            display: optionsName.get(e) as string,
+            action() {
+                changeAddress(e)
+            },
+        })
     })
 
     return (
@@ -163,11 +185,8 @@ function App() {
                     </svg>
                     <div className={styles.selectionForeground}>
                         <Dropdown
-                            names={optionsName}
-                            apiOptions={apiOptions}
-                            setSelected={setSelected}
-                            selected={selected}
-                            setDataObj={setDataObj}
+                            selectedItem={optionsName.get(selected) as string}
+                            dropdownItems={dropdownOptions}
                         />
                         <div className={styles.selectionName}>
                             <svg height={56} width={60}>
@@ -176,9 +195,7 @@ function App() {
                             {optionsName.get(selected)}
                         </div>
                         <div className={styles.selectionFooterMobile}>
-                            <p>
-                                concurso n° {dataObj.concurso}
-                            </p>
+                            <p>concurso n° {dataObj.concurso}</p>
                         </div>
                         <div className={styles.selectionFooterDesktop}>
                             <p>
