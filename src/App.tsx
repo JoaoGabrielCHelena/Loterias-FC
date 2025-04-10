@@ -130,7 +130,7 @@ function App() {
                     concurso: result.concurso,
                     data: result.data,
                 })
-            } catch (err) {
+            } catch (err:any) {
                 setDataObj({
                     dezenas: ["error"],
                     concurso: "error",
