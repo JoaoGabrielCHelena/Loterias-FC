@@ -174,7 +174,7 @@ function App() {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 613 1080"
                         className={`${styles.coloredBg} ${styles.coloredBgDesktop}`}
-                        style={{ "--color": optionsColor.get(selected) }}
+                        style={{ "--color": optionsColor.get(selected) } as React.CSSProperties}
                     >
                         <path
                             d="M613 0s-251.74 501.011 0 1080H0V0h613Z"
@@ -187,7 +187,7 @@ function App() {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 524 465"
                         className={`${styles.coloredBg} ${styles.coloredBgMobile}`}
-                        style={{ "--color": optionsColor.get(selected) }}
+                        style={{ "--color": optionsColor.get(selected) } as React.CSSProperties}
                     >
                         <path
                             d="M871.477 569.828s-565.25-288.219-1218.477 0V-132H871.477v701.828Z"
